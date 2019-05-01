@@ -1,0 +1,74 @@
+{{ navigation | raw }}
+<div id="ai1ec_registration_calendar">
+<div class="ai1ec-agenda-view{% if has_product_buy_button %} ai1ec-has-product-buy-button{% endif %}">
+	{% if dates is empty %}
+		<p class="ai1ec-no-results">
+			{{ text_upcoming_events }}
+		</p>
+	{% else %}
+		{% for date, date_info in dates %}
+			<div class="ai1ec-date 
+				{% if date_info.today is not empty %}ai1ec-today{% endif %}">
+				<div class="ai1ec-date-events">
+					{% for category in date_info.events %}
+						{% for event in category %}
+							<div id="event" class="ai1ec-event
+								ai1ec-event-id-{{ event.post_id }}
+								ai1ec-event-instance-id-{{ event.instance_id }}
+								{% if event.is_allday %}ai1ec-allday{% endif %}
+								{% if expanded %}ai1ec-expanded{% endif %}"
+								{% if event.ticket_url is not empty %}
+									data-ticket-url="{{ event.ticket_url | e( 'html_attr' ) }}"
+								{% endif %}
+								data-end="{{ event.end }}">
+
+								<div class="ai1ec-event-header">
+									<div class="ai1ec-btn-group ai1ec-actions">
+											{% if is_ticket_button_enabled and event.ticket_url is not empty %}
+												<a class="ai1ec-pull-right ai1ec-btn ai1ec-btn-primary
+														ai1ec-btn-xs ai1ec-buy-tickets"
+													target="_blank"
+													href="{{ event.ticket_url | e('html_attr') }}"
+													>{{ event.ticket_url_label }}</a>
+											{% endif %}
+											<a class="ai1ec-read-more ai1ec-btn ai1ec-btn-default
+												ai1ec-load-event"
+												href="{{ event.permalink | e('html_attr') }}">
+												{{ text_read_more }}
+											</a>
+										</div>
+										<a class="ai1ec-load-event"
+											href="{{ event.permalink | e('html_attr') }}">
+										{{ event.avatar_not_wrapped | raw }}
+									</a>
+									<span class="ai1ec-event-title">
+										<a href="{{ event.permalink | e('html_attr') }}">{{ event.filtered_title | raw }}</a>
+									</span>
+									{% if show_location_in_title and event.venue is not empty %}
+											<span class="ai1ec-event-location"
+												>{{ text_venue_separator | format( event.venue ) }}</span>
+										{% endif %}
+									{{ action_buttons | raw }}
+									{% set edit_post_link = event.edit_post_link %}
+									{% if edit_post_link is not empty %}
+										<a class="post-edit-link" href="{{ edit_post_link | raw }}">
+											<i class="ai1ec-fa ai1ec-fa-pencil"></i> {{ text_edit }}
+										</a>
+									{% endif %}
+
+									
+								</div>
+
+
+
+							</div>
+						{% endfor %} {# event in category #}
+					{% endfor %} {# category in date_info.events #}
+				</div>
+			</div>
+		{% endfor %} {# date, date_info in dates #}
+	{% endif %} {# dates is not empty #}
+</div>
+
+<div class="ai1ec-pull-left">{{ pagination_links | raw }}</div>
+</div>
