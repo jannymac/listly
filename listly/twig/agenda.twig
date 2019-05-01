@@ -9,7 +9,7 @@
 		{% for date, date_info in dates %}
 			<div class="ai1ec-date 
 				{% if date_info.today is not empty %}ai1ec-today{% endif %}">
-				<div class="ai1ec-date-events">
+				<div class="ai1ec-date-events ai1ec-term-id-{{ my_category }}">
 					{% for category in date_info.events %}
 						{% for event in category %}
 							<div id="event" class="ai1ec-event
